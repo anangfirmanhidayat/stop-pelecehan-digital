@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stop Pelecehan Verbal di Ruang Digital | Media Edukasi Pancasila</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(23, 32, 54, 0.7);
+      --card-border: rgba(56, 189, 248, 0.15);
+      --accent: #38bdf8;
+      --accent-hover: #7dd3fc;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #fb7185;
+      --danger-bg: rgba(251, 113, 133, 0.15);
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(14, 165, 233, 0.06) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+
+    /* Scroll Progress Bar */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    /* Layout Sections */
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 1.5rem;
+      max-width: 840px;
+      margin: 0 auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Reveal Animation Class */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      width: fit-content;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      line-height: 1.2;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.3rem);
+      line-height: 1.3;
+      margin-bottom: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* Glass Cards */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin: 2rem 0;
+    }
+
+    .author-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .author-card strong {
+      color: var(--text);
+      font-size: 1.15rem;
+      display: block;
+      margin-top: 0.35rem;
+    }
+
+    /* Counter Cards */
+    .stat-card {
+      text-align: center;
+      padding: 2.25rem 1.5rem;
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Chat Mockup UI */
+    .chat-mockup {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .chat-header {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-bubble {
+      background: #1e293b;
+      padding: 0.85rem 1.1rem;
+      border-radius: 12px 12px 12px 2px;
+      max-width: 85%;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .chat-bubble.highlight {
+      background: rgba(251, 113, 133, 0.12);
+      border-color: rgba(251, 113, 133, 0.3);
+      color: #fecdd3;
+    }
+
+    .callout {
+      background: rgba(56, 189, 248, 0.06);
+      border-left: 4px solid var(--accent);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.75rem 0;
+      color: var(--text);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #040914;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.9rem 1.8rem;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+      align-self: flex-start;
+      transition: all 0.25s ease;
+      letter-spacing: 0.3px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateX(4px);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
+
+    /* Choices / Polling */
+    .choice-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 1.1rem 1.25rem;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.2s ease;
+    }
+
+    .choice-btn:hover {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .choice-btn.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .reveal-box {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    /* Interactive Quiz */
+    .quiz-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: #0d1322;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      padding: 0.95rem 1.15rem;
+      border-radius: 10px;
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .quiz-opt:hover:not([disabled]) {
+      border-color: var(--accent);
+    }
+
+    .quiz-opt.correct {
+      background: var(--success-bg);
+      border-color: var(--success);
+      color: #6ee7b7;
+    }
+
+    .quiz-opt.wrong {
+      background: var(--danger-bg);
+      border-color: var(--danger);
+      color: #fda4af;
+    }
+
+    .feedback-status {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    .score-banner {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px dashed var(--accent);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 4.5rem 1.5rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #06090f;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll Progress Indicator -->
+  <div id="progress-bar"></div>
+
+  <!-- 00 · HERO SECTION -->
+  <section id="hero" class="reveal">
+    <span class="badge">Media Edukasi Pancasila</span>
+    <h1>STOP PELECEHAN VERBAL<br><span style="color: var(--accent);">DI RUANG DIGITAL</span></h1>
+    <p class="lead">Belajar dari Kasus Grup WhatsApp Mahasiswa Vokasi UNESA</p>
+    <p>Ruang digital bukan berarti bebas berkata apa saja. Setiap ucapan memiliki dampak nyata di dunia nyata, dan setiap orang memiliki hak mutlak untuk dihormati.</p>
+    
+    <div class="author-card">
+      Media edukatif ini disusun oleh:
+      <strong>Anang Firman Hidayat</strong>
+    </div>
+
+    <a href="#mengenal" class="btn">MULAI MEMAHAMI &rarr;</a>
+  </section>
+
+  <!-- 01 · MENGENAL MASALAH -->
+  <section id="mengenal" class="reveal">
+    <span class="badge">01 · Mengenal Masalah</span>
+    <h2>KETIKA "CANDAAN"<br>MELAMPAUI BATAS</h2>
+    <p>Komunikasi daring kini menjadi denyut nadi mahasiswa. Grup WhatsApp dimanfaatkan untuk bertukar kabar, materi kuliah, hingga bersenda gurau melepas penat.</p>
+    <p>Namun, layar sering kali memudarkan empati. Kata-kata yang merendahkan fisik, mengobjektifikasi seksualitas, atau menghina martabat kerap ditoleransi dan dibungkus rapi dengan alasan lelucon.</p>
+    
+    <!-- WhatsApp Mockup Visual -->
+    <div class="chat-mockup">
+      <div class="chat-header">💬 Ilustrasi Percakapan Grup WhatsApp</div>
+      <div class="chat-bubble">"Tugas besok dikumpul jam berapa rek?"</div>
+      <div class="chat-bubble highlight">"Halah santai, lihat tuh si [X] mending suruh..." (Pesan merendahkan martabat)</div>
+      <div class="chat-bubble">"Wkwk parah lu, cuma bercanda kan ya? 😂"</div>
+    </div>
+
+    <p>Kasus di lingkungan <b>Fakultas Vokasi Universitas Negeri Surabaya (UNESA)</b> menunjukkan bagaimana percakapan yang awalnya dianggap sepele di ruang tertutup akhirnya melukai banyak pihak secara serius.</p>
+    
+    <div class="callout">
+      <strong>Kunci Masalah:</strong> Menganggap guyonan sebagai tameng untuk merendahkan martabat orang lain adalah akar normalisasi kekerasan verbal di ruang digital.
+    </div>
+
+    <a href="#fakta" class="btn">LIHAT FAKTANYA &rarr;</a>
+  </section>
+
+  <!-- 02 · FAKTA KASUS -->
+  <section id="fakta" class="reveal">
+    <span class="badge">02 · Fakta Kasus</span>
+    <h2>APA YANG TERJADI DI UNESA?</h2>
+    <p>Pada Juli 2026, UNESA memproses laporan terkait percakapan grup WhatsApp antar-mahasiswa yang memuat konten bernada pelecehan verbal dan perendahan.</p>
+
+    <div class="grid">
+      <div class="card stat-card">
+        <div class="stat-number counter" data-target="6">0</div>
+        <p>Mahasiswa Vokasi dilaporkan</p>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-number counter" data-target="26">0</div>
+        <p>Pihak diduga terdampak</p>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-number counter" data-target="4">0</div>
+        <p>Dosen termasuk pihak terdampak</p>
+      </div>
+    </div>
+
+    <p>Kasus ini tidak didiamkan. Penanganan dijalankan melalui koridor kode etik internal kampus. Enam mahasiswa terlapor sempat <b>dinonaktifkan sementara dari aktivitas akademik</b> demi menjaga objektivitas dan kenyamanan korban.</p>
+    <p>Hasil akhir sidang komite etik pada <b>Agustus 2026 resmi menjatuhkan sanksi administratif</b> kepada pihak terlapor sesuai regulasi pencegahan kekerasan di lingkungan kampus.</p>
+
+    <div class="callout" style="font-size: 0.95rem;">
+      <b>Prinsip Perlindungan:</b> Rincian transkrip dan identitas pribadi tidak dicantumkan demi privasi korban serta kepatuhan pada kode etik edukasi.
+      <br><small style="color: var(--accent); margin-top: 5px; display: inline-block;">Sumber Rujukan: Rilis UNESA, Liputan CNN Indonesia, dan detikcom.</small>
+    </div>
+
+    <a href="#dampak" class="btn">LIHAT DAMPAKNYA &rarr;</a>
+  </section>
+
+  <!-- 03 · DAMPAK -->
+  <section id="dampak" class="reveal">
+    <span class="badge">03 · Dampak Nyata</span>
+    <h2>BUKAN HANYA SEKADAR KATA-KATA</h2>
+    <p>Teks di layar gawai memiliki konsekuensi psikologis dan sosial yang nyata bagi individu maupun iklim kampus:</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3 style="color: #fda4af;">😔 Rasa Tidak Nyaman</h3>
+        <p>Korban merasa terancam, terasing, dan kehilangan rasa percaya pada lingkungan pertemanannya.</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #93c5fd;">🧠 Trauma Psikologis</h3>
+        <p>Memicu kecemasan saat membuka gawai, hilangnya rasa percaya diri, hingga stres sosial berkepanjangan.</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #c4b5fd;">🎓 Lingkungan Toksik</h3>
+        <p>Merusak ruang belajar bersama menjadi tidak aman, tidak sehat, dan penuh prasangka negatif.</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #fcd34d;">💬 Normalisasi Kebiasaan</h3>
+        <p>Sikap mendiamkan pelecehan akan membangun persepsi bahwa merendahkan orang lain adalah hal wajar.</p>
+      </div>
+    </div>
+
+    <a href="#refleksi" class="btn">COBA RENUNGKAN &rarr;</a>
+  </section>
+
+  <!-- 04 · REFLEKSI INTERAKTIF -->
+  <section id="refleksi" class="reveal">
+    <span class="badge">04 · Refleksi Diri</span>
+    <h2>KALAU KAMU ADA DI DALAM GRUP ITU...</h2>
+    <p>Bayangkan ponselmu bergetar, dan di dalam grup obrolan ada teman yang melontarkan pesan merendahkan rekan lain.</p>
+    
+    <p><b>Langkah pertama apa yang spontan kamu lakukan?</b></p>
+    <div id="poll1">
+      <button class="choice-btn" onclick="pilihRefleksi(this)">😶 Diam saja dan pura-pura tidak membaca</button>
+      <button class="choice-btn" onclick="pilihRefleksi(this)">🗣️ Menegur langsung di grup atau melalui pesan pribadi</button>
+      <button class="choice-btn" onclick="pilihRefleksi(this)">🚫 Meminta percakapan tidak etis tersebut segera disetop</button>
+      <button class="choice-btn" onclick="pilihRefleksi(this)">📢 Menghubungi Satgas PPKS atau pihak berwenang kampus</button>
+      <button class="choice-btn" onclick="pilihRefleksi(this)">🤷 Ragu dan bingung harus bersikap bagaimana</button>
+    </div>
+
+    <div id="reveal1" class="reveal-box callout">
+      <strong>Catatan Reflektif:</strong> Banyak orang memilih diam bukan karena setuju, melainkan karena sungkan atau cemas dikucilkan. Namun, <b>keheningan saksi (*bystander*) sering disalahartikan pelaku sebagai bentuk dukungan.</b> Berani bersuara adalah penyelamat.
+    </div>
+
+    <div style="margin-top: 2rem;">
+      <p><b>Pertanyaan penegas:</b> Apakah dalih <i>"cuma bercanda"</i> bisa membenarkan tindakan merendahkan martabat orang lain?</p>
+      <div id="poll2" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="choice-btn" style="flex: 1; text-align: center;" onclick="pilihSikap(this, false)">YA</button>
+        <button class="choice-btn" style="flex: 1; text-align: center;" onclick="pilihSikap(this, true)">TIDAK</button>
+        <button class="choice-btn" style="flex: 1; text-align: center;" onclick="pilihSikap(this, false)">TERGANTUNG SITUASI</button>
+      </div>
+    </div>
+
+    <div id="reveal2" class="reveal-box callout" style="border-left-color: var(--danger);">
+      <b>TIDAK AKAN PERNAH.</b> Humor berakar pada kelucuan bersama, bukan pada penderitaan atau perendahan martabat orang lain.
+    </div>
+
+    <a href="#solusi" class="btn">LALU, APA YANG BISA KITA LAKUKAN? &rarr;</a>
+  </section>
+
+  <!-- 05 · SOLUSI PRAKTIS -->
+  <section id="solusi" class="reveal">
+    <span class="badge">05 · Solusi Konkret</span>
+    <h2>BERCANDA BOLEH,<br>MERENDAHKAN JANGAN</h2>
+    <p>Lima prinsip sederhana untuk membentengi diri dan komunitas dari pelecehan digital:</p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">Langkah 01</span>
+        <h3 style="margin-top: 0.75rem;">Pikirkan Dampaknya</h3>
+        <p>Refleksikan sebelum mengetik: <i>"Apakah kata-kata ini menghormati orang lain atau justru mempermalukannya?"</i></p>
+      </div>
+      <div class="card">
+        <span class="tag">Langkah 02</span>
+        <h3 style="margin-top: 0.75rem;">Hentikan Normalisasi</h3>
+        <p>Jangan memberi reaksi tertawa (*laugh emoji*) pada lelucon seksis atau konten body shaming.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Langkah 03</span>
+        <h3 style="margin-top: 0.75rem;">Berani Bersikap</h3>
+        <p>Tegur dengan kalimat objektif dan tenang bahwa topik yang dibahas tidak etis untuk dilanjutkan.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Langkah 04</span>
+        <h3 style="margin-top: 0.75rem;">Gunakan Jalur Resmi</h3>
+        <p>Laporkan indikasi kekerasan verbal kepada Satgas PPKS kampus tanpa menyebarkan aib korban.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Langkah 05</span>
+        <h3 style="margin-top: 0.75rem;">Bangun Kultur Empati</h3>
+        <p>Jadikan ruang digital kelompok sebagai wadah yang aman dan saling membesarkan.</p>
+      </div>
+    </div>
+
+    <a href="#literasi" class="btn">SEBELUM KAMU MENGIRIM &rarr;</a>
+  </section>
+
+  <!-- 06 · LITERASI DIGITAL -->
+  <section id="literasi" class="reveal">
+    <span class="badge">06 · Saring Sebelum Sharing</span>
+    <h2>SEBELUM KAMU KLIK "KIRIM"</h2>
+    <p>Jadikan formula 3 pertanyaan ini sebagai filter otomatis sebelum mengirimkan pesan apa pun:</p>
+
+    <div class="grid">
+      <div class="card" style="text-align: center;">
+        <div style="font-size: 2.25rem; margin-bottom: 0.5rem;">🔍</div>
+        <h3>1. BENAR?</h3>
+        <p>Apakah informasi dan ujaran yang kamu sampaikan sesuai fakta dan bukan fitnah?</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div style="font-size: 2.25rem; margin-bottom: 0.5rem;">💡</div>
+        <h3>2. PERLU?</h3>
+        <p>Apakah ucapan ini membawa kebaikan atau sekadar menambah kebisingan negatif?</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div style="font-size: 2.25rem; margin-bottom: 0.5rem;">🤝</div>
+        <h3>3. MENGHARGAI?</h3>
+        <p>Apakah kamu rela jika ucapan serupa ditujukan kepadamu atau keluargamu?</p>
+      </div>
+    </div>
+
+    <div class="callout" style="text-align: center;">
+      <b>Layar kaca gawai tidak membatalkan hukum moral.</b> Di balik akun penerima pesan, ada manusia dengan perasaan dan martabat yang nyata.
+    </div>
+
+    <a href="#pancasila" class="btn">HUBUNGKAN DENGAN PANCASILA &rarr;</a>
+  </section>
+
+  <!-- 07 · NILAI PANCASILA -->
+  <section id="pancasila" class="reveal">
+    <span class="badge">07 · Nilai Dasar Bangsa</span>
+    <h2>APA HUBUNGANNYA DENGAN PANCASILA?</h2>
+    <p>Pancasila adalah panduan hidup bermasyarakat, termasuk dalam etika berkomunikasi digital:</p>
+
+    <div class="grid">
+      <div class="card">
+        <span style="font-size: 2.2rem; display: block; margin-bottom: 0.5rem;">❤️</span>
+        <h3>Sila Kedua</h3>
+        <p style="color: #fff; font-weight: 600;">Kemanusiaan yang Adil dan Beradab</p>
+        <p>Pelecehan verbal adalah bentuk nyata ketiadaan adab. Mengamalkan sila ini berarti menjunjung tinggi martabat kemanusiaan orang lain kapan pun dan di mana pun.</p>
+        <div class="tag-list">
+          <span class="tag">Menghormati</span>
+          <span class="tag">Menjaga Adab</span>
+          <span class="tag">Anti-Pelecehan</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span style="font-size: 2.2rem; display: block; margin-bottom: 0.5rem;">⚖️</span>
+        <h3>Sila Kelima</h3>
+        <p style="color: #fff; font-weight: 600;">Keadilan Sosial bagi Seluruh Rakyat Indonesia</p>
+        <p>Setiap sivitas akademika berhak atas lingkungan kampus yang adil, suportif, serta terbebas dari intimidasi maupun diskriminasi digital.</p>
+        <div class="tag-list">
+          <span class="tag">Rasa Aman</span>
+          <span class="tag">Kesetaraan Hak</span>
+          <span class="tag">Keadilan Korban</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="#quiz" class="btn">COBA UJI PEMAHAMANMU &rarr;</a>
+  </section>
+
+  <!-- 08 · MINI QUIZ INTERAKTIF DENGAN SKOR -->
+  <section id="quiz" class="reveal">
+    <span class="badge">08 · Evaluasi Mandiri</span>
+    <h2>SEBERAPA PAHAM KAMU?</h2>
+    <p>Jawab pertanyaan berikut untuk menguji ketajaman pemahamanmu:</p>
+
+    <div class="score-banner">
+      <span>Progres Quiz:</span>
+      <span id="quiz-score">Skor: 0 / 4</span>
+    </div>
+
+    <!-- Soal 1 -->
+    <div class="quiz-card">
+      <div class="quiz-title">1. Apakah pelecehan verbal dapat terjadi melalui grup percakapan daring (WhatsApp)?</div>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, true, 'fb1', 'Tepat! Komunikasi digital melalui teks, stiker, atau rekaman suara tetap berpotensi memuat pelecehan verbal.')">🔘 Ya</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb1', 'Keliru. Pelecehan verbal tetap berlaku meski dimediasi oleh layar digital.')">🔘 Tidak</button>
+      <div id="fb1" class="feedback-status"></div>
+    </div>
+
+    <!-- Soal 2 -->
+    <div class="quiz-card">
+      <div class="quiz-title">2. Apakah status "cuma bercanda" membenarkan perendahan martabat seseorang?</div>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb2', 'Kurang tepat. Candaan tidak menghilangkan esensi pelecehan.')">🔘 Ya</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, true, 'fb2', 'Tepat! Niat bercanda tidak menghapus dampak buruk luka psikis korban.')">🔘 Tidak</button>
+      <div id="fb2" class="feedback-status"></div>
+    </div>
+
+    <!-- Soal 3 -->
+    <div class="quiz-card">
+      <div class="quiz-title">3. Sikap yang mencerminkan pengamalan Sila Kedua Pancasila di ruang maya adalah...</div>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb3', 'Salah. Merendahkan orang lain bertolak belakang dengan nilai keadaban.')">🔘 Merendahkan orang lain demi hiburan</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, true, 'fb3', 'Tepat! Menjaga martabat dan menghargai orang lain adalah manifestasi langsung Sila Kedua.')">🔘 Menghormati martabat sesama manusia</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb3', 'Salah. Sikap acuh turut melanggengkan tindak pelecehan.')">🔘 Membiarkan pelecehan terjadi</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb3', 'Salah. Menyebarkan percakapan melanggar privasi korban.')">🔘 Menyebarluaskan isi percakapan</button>
+      <div id="fb3" class="feedback-status"></div>
+    </div>
+
+    <!-- Soal 4 -->
+    <div class="quiz-card">
+      <div class="quiz-title">4. Apa tindakan paling bijak saat melihat pelecehan verbal di grup obrolan?</div>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb4', 'Salah. Ikut tertawa berarti ikut menjadi bagian dari masalah.')">🔘 Ikut meramaikan</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb4', 'Kurang tepat. Tangkapan layar berisiko disalahgunakan dan merugikan korban.')">🔘 Menyebarkan tangkapan layar ke medsos</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, false, 'fb4', 'Kurang tepat. Sikap pasif tidak menyelesaikan situasi.')">🔘 Mengabaikannya</button>
+      <button class="quiz-opt" onclick="evaluasiQuiz(this, true, 'fb4', 'Tepat! Menegur dengan proporsional atau melapor melalui kanal etik kampus adalah langkah tepat.')">🔘 Berani bersikap dan menggunakan jalur pelaporan resmi</button>
+      <div id="fb4" class="feedback-status"></div>
+    </div>
+
+    <a href="#aksi" class="btn">LIHAT AKSI KITA &rarr;</a>
+  </section>
+
+  <!-- 09 · AKSI NYATA -->
+  <section id="aksi" class="reveal">
+    <span class="badge">09 · Langkah Bersama</span>
+    <h2>MULAI DARI DIRI SENDIRI</h2>
+    <p>Menciptakan ruang digital yang aman bukan angan-angan kosong bila kita memulainya hari ini:</p>
+
+    <div class="card" style="line-height: 2.1; font-size: 1.1rem; border-left: 4px solid var(--success);">
+      ✨ <b>Jangan ikut menyebarkan</b> konten bernuansa pelecehan.<br>
+      ✨ <b>Tolak normalisasi</b> kata-kata merendahkan atas nama keakraban.<br>
+      ✨ <b>Berani menegur rekan</b> secara santun bila ucapannya kebablasan.<br>
+      ✨ <b>Jaga privasi dan dukung</b> rekan yang merasa tertekan.<br>
+      ✨ <b>Manfaatkan layanan pengaduan kampus (Satgas PPKS)</b> bila diperlukan.
+    </div>
+
+    <a href="#feedback" class="btn">BAGIKAN PENDAPATMU &rarr;</a>
+  </section>
+
+  <!-- 10 · EVALUASI & FEEDBACK -->
+  <section id="feedback" class="reveal">
+    <span class="badge">10 · Test & Evaluate LKM</span>
+    <h2>BAGIKAN PENDAPATMU</h2>
+    <p>Sebagai bagian dari penyusunan lembar evaluasi proyek mata kuliah, kami membutuhkan tanggapan objektif Anda:</p>
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <ul style="padding-left: 1.25rem; color: var(--text-muted); line-height: 2;">
+        <li>Seberapa jauh media ini membuka kesadaran Anda mengenai batasan bercanda?</li>
+        <li>Apakah Anda memahami langkah aman saat melihat pelecehan verbal terjadi?</li>
+        <li>Bagaimana penilaian Anda terhadap keterkaitan etika digital dengan nilai Pancasila?</li>
+      </ul>
+    </div>
+
+    <!-- TAUTAN GOOGLE FORM ANDA -->
+    <a href="https://forms.google.com" target="_blank" class="btn" style="font-size: 1.05rem;">
+      ISI SURVEI EVALUASI (GOOGLE FORM) &rarr;
+    </a>
+
+    <p style="font-size: 0.85rem; margin-top: 1.25rem; color: #64748b;">
+      *Hasil respons ini akan direkapitulasi secara anonim sebagai data empiris tahap pengujian modul pembelajaran.
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p style="font-weight: 800; color: #fff; font-size: 1.1rem;">STOP PELECEHAN VERBAL DI RUANG DIGITAL</p>
+    <p>Belajar dari Kasus Percakapan Grup Mahasiswa Fakultas Vokasi UNESA</p>
+    <p style="color: var(--accent); margin: 0.85rem 0; font-weight: 600;"><i>"Bercanda Boleh, Merendahkan Jangan."</i></p>
+    <p style="font-size: 0.85rem; color: #475569;">Media Edukasi Interaktif Pancasila · Disusun oleh: <b>Anang Firman Hidayat</b></p>
+  </footer>
+
+  <!-- JAVASCRIPT SYSTEM -->
+  <script>
+    // 1. Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+    });
+
+    // 2. Reveal Animations on Scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // 3. Counter Animation for Fact Stats
+    let counted = false;
+    const statSection = document.getElementById('fakta');
+    window.addEventListener('scroll', () => {
+      const rect = statSection.getBoundingClientRect();
+      if (rect.top <= window.innerHeight && !counted) {
+        counted = true;
+        document.querySelectorAll('.counter').forEach(counter => {
+          const target = +counter.getAttribute('data-target');
+          let count = 0;
+          const speed = target / 20;
+          const updateCount = () => {
+            count += speed;
+            if (count < target) {
+              counter.innerText = Math.ceil(count);
+              setTimeout(updateCount, 40);
+            } else {
+              counter.innerText = target;
+            }
+          };
+          updateCount();
+        });
+      }
+    });
+
+    // 4. Interactive Poll / Reflection Logic
+    function pilihRefleksi(btn) {
+      document.querySelectorAll('#poll1 .choice-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('reveal1').style.display = 'block';
+    }
+
+    function pilihSikap(btn, isValid) {
+      document.querySelectorAll('#poll2 .choice-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('reveal2').style.display = 'block';
+    }
+
+    // 5. Real-time Quiz Score Logic
+    let currentScore = 0;
+    function evaluasiQuiz(btn, isCorrect, feedbackId, note) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.quiz-opt').forEach(opt => opt.disabled = true);
+
+      const fb = document.getElementById(feedbackId);
+      fb.style.display = 'block';
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+        fb.innerHTML = `<span style="color: var(--success)">✓ Benar!</span> ${note}`;
+        currentScore++;
+      } else {
+        btn.classList.add('wrong');
+        fb.innerHTML = `<span style="color: var(--danger)">✗ Kurang tepat.</span> ${note}`;
+      }
+
+      document.getElementById('quiz-score').innerText = `Skor: ${currentScore} / 4`;
+    }
+  </script>
+</body>
+</html>
